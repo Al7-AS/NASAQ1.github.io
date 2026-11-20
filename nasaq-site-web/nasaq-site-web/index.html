@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NASAQ | ناسك للإبداع</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080b; --bg2:#101016; --card:#15151c; --line:#24242d;
+  --text:#f4f1ea; --muted:#9a978f;
+  --accent:#ff5a1f; --accent2:#ff8a4c; --gold:#e8b84a; --ok:#3ecf8e;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font-family:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.hidden{display:none !important}
+
+/* ---------- KEYFRAMES ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(50%)}}
+@keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes shine{from{left:-120%}to{left:140%}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------- NAV ---------- */
+nav{position:sticky;top:0;z-index:60;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,8,11,.88);backdrop-filter:blur(14px);border-color:var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-weight:900;font-size:1.5rem;letter-spacing:3px;display:flex;align-items:center;gap:10px}
+.logo span{color:var(--accent)}
+.logo-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:glow 2s infinite}
+.links{display:flex;align-items:center;gap:24px}
+.links a{color:var(--muted);font-weight:600;font-size:.95rem;position:relative;transition:color .3s}
+.links a::after{content:"";position:absolute;inset-inline:0;bottom:-6px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+.links a:hover{color:var(--text)}
+.links a:hover::after{transform:scaleX(1);transform-origin:left}
+.burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative}
+.burger span{position:absolute;right:10px;left:10px;height:2px;background:var(--text);border-radius:2px;transition:.35s var(--ease)}
+.burger span:nth-child(1){top:15px}
+.burger span:nth-child(2){top:22px}
+.burger span:nth-child(3){top:29px}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:860px){
+  .burger{display:block}
+  .links{position:fixed;inset:72px 0 auto 0;flex-direction:column;background:rgba(8,8,11,.97);backdrop-filter:blur(14px);padding:12px 20px 28px;gap:0;border-bottom:1px solid var(--line);transform:translateY(-120%);opacity:0;transition:transform .45s var(--ease),opacity .3s;pointer-events:none}
+  .links.open{transform:none;opacity:1;pointer-events:auto}
+  .links a{padding:16px 0;border-bottom:1px solid var(--line);font-size:1.05rem;width:100%}
+  .links a::after{display:none}
+  .nav-cta{display:none}
+}
+
+/* ---------- BUTTONS ---------- */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;border:0;padding:13px 28px;border-radius:999px;font-weight:700;cursor:pointer;font-size:1rem;transition:transform .3s var(--ease),box-shadow .3s,filter .3s;box-shadow:0 10px 30px -10px rgba(255,90,31,.6)}
+.btn::before{content:"";position:absolute;top:0;bottom:0;width:60%;left:-120%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 16px 36px -10px rgba(255,90,31,.8)}
+.btn:hover::before{animation:shine .9s}
+.btn.ghost{background:transparent;border:1px solid #33333d;color:var(--text);box-shadow:none}
+.btn.ghost:hover{border-color:var(--accent);box-shadow:none}
+.btn.small{padding:9px 18px;font-size:.88rem}
+.btn.danger{background:transparent;border:1px solid #5a2a2a;color:#ff7b7b;box-shadow:none}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:calc(100vh - 72px);display:flex;align-items:center;padding:60px 0 120px;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;pointer-events:none}
+.orb.a{width:380px;height:380px;background:var(--accent);top:-80px;right:-100px;animation:float 9s infinite}
+.orb.b{width:300px;height:300px;background:var(--gold);bottom:-60px;left:-80px;animation:float 11s infinite reverse;opacity:.25}
+.hero::before{content:"NASAQ";position:absolute;bottom:40px;left:-20px;font-size:clamp(70px,16vw,200px);font-weight:900;color:transparent;-webkit-text-stroke:1px #23232c;letter-spacing:8px;white-space:nowrap;pointer-events:none;animation:fadeIn 2s .3s both}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:7px 16px;border-radius:999px;color:var(--gold);font-size:.9rem;font-weight:600;margin-bottom:26px;background:rgba(255,255,255,.02);animation:fadeUp .8s .1s both}
+.badge i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:glow 1.6s infinite}
+.hero h1{font-size:clamp(2.3rem,6.4vw,4.8rem);font-weight:900;line-height:1.18;max-width:900px;animation:fadeUp .9s .25s both}
+.hero h1 em{font-style:normal;color:var(--accent);position:relative;display:inline-block}
+.hero h1 em::after{content:"";position:absolute;inset-inline:0;bottom:6px;height:10px;background:rgba(255,90,31,.25);z-index:-1;transform-origin:right;animation:lineGrow .9s 1s var(--ease) both}
+.hero p{color:var(--muted);font-size:clamp(1rem,2vw,1.15rem);max-width:620px;margin:22px 0 36px;animation:fadeUp .9s .45s both}
+.hero .actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .9s .6s both}
+.scroll-hint{position:absolute;bottom:28px;right:50%;transform:translateX(50%);width:26px;height:42px;border:2px solid #3a3a45;border-radius:14px;animation:fadeIn 1s 1.2s both}
+.scroll-hint::after{content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--accent);animation:float 1.6s infinite}
+
+/* ---------- MARQUEE ---------- */
+.marquee{border-block:1px solid var(--line);background:var(--bg2);overflow:hidden;white-space:nowrap;padding:18px 0}
+.marquee-track{display:inline-flex;gap:48px;animation:marquee 26s linear infinite;font-weight:800;font-size:1.1rem;color:var(--muted)}
+.marquee-track span{display:inline-flex;align-items:center;gap:48px}
+.marquee-track span::after{content:"✦";color:var(--accent)}
+
+/* ---------- SECTIONS ---------- */
+section{padding:110px 0;position:relative}
+.sec-head{margin-bottom:52px}
+.sec-head small{color:var(--accent);font-weight:700;letter-spacing:1px;font-size:.9rem}
+.sec-head h2{font-size:clamp(1.8rem,4.2vw,2.8rem);font-weight:900;margin-top:6px;line-height:1.25}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+
+/* ---------- SERVICES ---------- */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:960px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}}
+.card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;transition:transform .45s var(--ease),border-color .3s,box-shadow .45s}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,90,31,.18),transparent 60%);opacity:0;transition:opacity .4s}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,90,31,.5);box-shadow:0 24px 50px -24px rgba(255,90,31,.5)}
+.card:hover::before{opacity:1}
+.card .ico{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:1.8rem;background:rgba(255,90,31,.1);margin-bottom:18px;transition:transform .5s var(--ease)}
+.card:hover .ico{transform:rotate(-8deg) scale(1.1)}
+.card h3{font-size:1.2rem;font-weight:800;margin-bottom:8px}
+.card p{color:var(--muted);font-size:.95rem}
+
+/* ---------- WORK / GALLERY ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+.fbtn{background:var(--card);border:1px solid var(--line);color:var(--muted);padding:10px 22px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.92rem;transition:.3s var(--ease)}
+.fbtn:hover{color:var(--text);border-color:#3a3a45}
+.fbtn.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 24px -8px rgba(255,90,31,.7)}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.gallery{grid-template-columns:repeat(2,1fr);gap:14px}}
+@media(max-width:520px){.gallery{grid-template-columns:1fr;gap:18px}}
+.gcard{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0c0c10;cursor:pointer;animation:pop .7s var(--ease) both;aspect-ratio:4/5}
+.gcard.wide{aspect-ratio:1/1}
+.gimg{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,#2a0d05,#08080b)}
+.gimg img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gcard:hover .gimg img{transform:scale(1.07)}
+.gcard figcaption{position:absolute;inset:auto 0 0 0;padding:70px 20px 18px;background:linear-gradient(to top,rgba(0,0,0,.92),transparent);transform:translateY(20%);opacity:0;transition:transform .5s var(--ease),opacity .5s}
+.gcard:hover figcaption{transform:none;opacity:1}
+.gcard figcaption small{color:var(--gold);font-weight:700;font-size:.8rem}
+.gcard figcaption h4{font-weight:800;font-size:1.05rem}
+.gcard .zoom{position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.55);display:grid;place-items:center;font-size:1.1rem;opacity:0;transform:scale(.6);transition:.4s var(--ease)}
+.gcard:hover .zoom{opacity:1;transform:none}
+@media(hover:none){.gcard figcaption{transform:none;opacity:1}.gcard .zoom{opacity:1;transform:none}}
+
+/* ---------- LIGHTBOX ---------- */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(4,4,6,.94);backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 60px 80px;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.lb.open{opacity:1;pointer-events:auto}
+.lb-img{max-width:100%;max-height:78vh;border-radius:14px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8);transition:opacity .3s,transform .4s var(--ease)}
+.lb-img.swap{opacity:0;transform:scale(.97)}
+.lb-cap{margin-top:18px;text-align:center}
+.lb-cap small{color:var(--gold);font-weight:700}
+.lb-cap h4{font-weight:800;font-size:1.2rem}
+.lb-btn{position:absolute;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;transition:.3s}
+.lb-btn:hover{background:var(--accent);border-color:var(--accent)}
+.lb-x{top:18px;left:18px}
+.lb-prev{top:50%;right:14px;transform:translateY(-50%)}
+.lb-next{top:50%;left:14px;transform:translateY(-50%)}
+.lb-count{position:absolute;top:30px;right:50%;transform:translateX(50%);color:var(--muted);font-size:.9rem;font-weight:700}
+@media(max-width:600px){.lb{padding:70px 14px 110px}.lb-prev,.lb-next{top:auto;bottom:24px;transform:none}.lb-prev{right:auto;left:calc(50% - 60px)}.lb-next{left:calc(50% + 12px)}}
+
+/* ---------- PROCESS ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:28px 24px;border-radius:20px;background:var(--card);border:1px solid var(--line);transition:.4s var(--ease)}
+.step:hover{transform:translateY(-6px);border-color:var(--gold)}
+.step b{font-size:2.6rem;font-weight:900;display:block;line-height:1;background:linear-gradient(180deg,var(--accent),#ff8a4c00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.step h4{font-weight:800;margin:14px 0 6px;font-size:1.1rem}
+.step p{color:var(--muted);font-size:.93rem}
+
+/* ---------- ABOUT ---------- */
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center}
+@media(max-width:860px){.about{grid-template-columns:1fr;gap:40px}}
+.about p{color:var(--muted);font-size:1.05rem;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 20px;text-align:center;transition:.4s var(--ease)}
+.stat:hover{transform:translateY(-4px);border-color:var(--gold)}
+.stat b{display:block;font-size:2.4rem;font-weight:900;color:var(--gold);direction:ltr;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.9rem}
+
+/* ---------- CONTACT ---------- */
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+.contact .card{text-align:center}
+.contact .card .ico{margin-inline:auto}
+.contact .card a,.contact .card p{color:var(--text);font-weight:700;direction:ltr;display:inline-block;margin-top:6px;word-break:break-all}
+.contact .card a:hover{color:var(--accent)}
+.contact .card p{direction:rtl}
+
+footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:.9rem;transition:.3s}
+footer button:hover{color:var(--accent)}
+
+/* ---------- FLOAT WHATSAPP ---------- */
+.wa-float{position:fixed;bottom:22px;left:22px;z-index:55;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;font-size:1.7rem;box-shadow:0 10px 30px -6px rgba(37,211,102,.7);animation:float 3s infinite}
+.wa-float:hover{transform:scale(1.08)}
+
+/* ---------- ADMIN ---------- */
+#admin{padding:40px 0 90px;min-height:100vh}
+.enter{animation:fadeUp .7s var(--ease) both}
+.adm-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+.adm-head h2{font-size:1.8rem;font-weight:900}
+.adm-head h2 span{color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+@media(max-width:760px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;transition:.3s}
+.kpi:hover{border-color:var(--accent)}
+.kpi span{color:var(--muted);font-size:.85rem}
+.kpi b{display:block;font-size:2.1rem;font-weight:900}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:24px}
+.panel h3{font-weight:800;font-size:1.2rem;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.dept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:860px){.dept-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.dept-grid{grid-template-columns:1fr}}
+.dept{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:18px;border-top:3px solid var(--c);transition:.3s}
+.dept:hover{transform:translateY(-3px)}
+.dept h4{font-weight:800;font-size:1.05rem}
+.dept .mgr{color:var(--muted);font-size:.88rem;margin:4px 0 10px}
+.dept .nums{display:flex;gap:14px;font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.dept .nums b{color:var(--text)}
+form.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px}
+form.row label{display:flex;flex-direction:column;gap:4px;font-size:.82rem;color:var(--muted);flex:1;min-width:150px}
+input,select{background:var(--bg2);border:1px solid var(--line);color:var(--text);padding:11px 12px;border-radius:12px;font-size:.95rem;outline:none;transition:border-color .3s}
+input:focus,select:focus{border-color:var(--accent)}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:960px){.board{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.board{grid-template-columns:1fr}}
+.col{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:12px;min-height:200px}
+.col h5{font-size:.9rem;color:var(--muted);margin:4px 6px 12px;display:flex;justify-content:space-between}
+.col h5 b{color:var(--text)}
+.task{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;border-inline-start:3px solid var(--c);animation:pop .5s var(--ease) both}
+.task h6{font-size:.98rem;font-weight:700;margin-bottom:6px}
+.task .meta{font-size:.8rem;color:var(--muted);margin-bottom:10px}
+.task .acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.task select{padding:6px 8px;font-size:.8rem}
+.task .x{background:none;border:0;color:#ff7b7b;cursor:pointer;font-size:.85rem;margin-inline-start:auto}
+.empty{color:var(--muted);font-size:.85rem;text-align:center;padding:20px 0}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;background:var(--bg2);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:right;padding:12px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+.tbl{overflow-x:auto}
+</style>
+</head>
+<body>
+
+<!-- ================= PUBLIC SITE ================= -->
+<div id="public">
+  <nav id="nav">
+    <div class="wrap">
+      <a href="#" class="logo"><i class="logo-dot"></i>NAS<span>A</span>Q</a>
+      <div class="links" id="links">
+        <a href="#services">الخدمات</a>
+        <a href="#work">أعمالنا</a>
+        <a href="#process">طريقة العمل</a>
+        <a href="#about">عن الشركة</a>
+        <a href="#contact">تواصل معنا</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a class="btn small nav-cta" href="https://wa.me/201204117847" target="_blank">ابدأ مشروعك</a>
+        <button class="burger" id="burger" aria-label="القائمة"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="orb a"></div><div class="orb b"></div>
+    <div class="wrap">
+      <span class="badge"><i></i>وكالة إبداع متكاملة — المنصورة</span>
+      <h1>نخلّي علامتك التجارية <em>تتكلم</em> وتفضل في ذهن الجمهور</h1>
+      <p>إعلانات بتبيع، جرافيك بيلفت النظر، مونتاج بيحكي القصة، ومواقع بتشتغل بكفاءة. كل حاجة تحت سقف واحد.</p>
+      <div class="actions">
+        <a class="btn" href="https://wa.me/201204117847" target="_blank">تواصل على واتساب</a>
+        <a class="btn ghost" href="#work">شوف أعمالنا</a>
+      </div>
+    </div>
+    <div class="scroll-hint"></div>
+  </header>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>إعلانات</span><span>جرافيك</span><span>مونتاج</span><span>صناعة مواقع</span><span>هوية بصرية</span><span>أفيشات</span>
+      <span>إعلانات</span><span>جرافيك</span><span>مونتاج</span><span>صناعة مواقع</span><span>هوية بصرية</span><span>أفيشات</span>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head reveal"><small>خدماتنا</small><h2>كل اللي علامتك محتاجاه</h2></div>
+      <div class="grid4">
+        <div class="card reveal"><div class="ico">📣</div><h3>إعلانات وحملات</h3><p>تخطيط وتنفيذ حملات إعلانية ممولة تركز على النتيجة والعائد.</p></div>
+        <div class="card reveal d1"><div class="ico">🎨</div><h3>تصميم جرافيك</h3><p>هوية بصرية، بوسترات، سوشيال ميديا، ومطبوعات بإحساس مختلف.</p></div>
+        <div class="card reveal d2"><div class="ico">🎬</div><h3>مونتاج وإنتاج</h3><p>فيديوهات إعلانية، ريلز، وفيديوهات تعريفية بإيقاع يشد الانتباه.</p></div>
+        <div class="card reveal d3"><div class="ico">💻</div><h3>صناعة المواقع</h3><p>مواقع وتطبيقات ويب سريعة ومتجاوبة مع الموبايل، جاهزة للنشر.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head reveal"><small>معرض الأعمال</small><h2>شوية من شغلنا</h2></div>
+      <div class="filters reveal" id="filters"></div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head reveal"><small>طريقة العمل</small><h2>من الفكرة لحد التسليم</h2></div>
+      <div class="steps">
+        <div class="step reveal"><b>01</b><h4>فهم الهدف</h4><p>نسمع منك ونحدد الهدف والجمهور والميزانية.</p></div>
+        <div class="step reveal d1"><b>02</b><h4>الفكرة والتصميم</h4><p>نقدم مفاهيم ونختار الأقرب لرؤيتك.</p></div>
+        <div class="step reveal d2"><b>03</b><h4>التنفيذ والمراجعة</h4><p>تنفيذ دقيق مع مراجعات حتى تكون راضي تماماً.</p></div>
+        <div class="step reveal d3"><b>04</b><h4>التسليم والدعم</h4><p>تسليم كامل للملفات ودعم بعد الإطلاق.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="reveal">
+        <div class="sec-head" style="margin-bottom:24px"><small>عن الشركة</small><h2>إحنا NASAQ</h2></div>
+        <p>NASAQ شركة إبداعية متخصصة في الإعلانات والجرافيك والمونتاج وصناعة المواقع. فريقنا مقسم لأقسام، ولكل قسم مدير مسؤول عن الجودة والمواعيد.</p>
+        <p>هدفنا إن كل مشروع يطلع بمستوى يخلّي عميلنا يفتخر بيه.</p>
+        <a class="btn" href="#contact" style="margin-top:12px">كلمنا دلوقتي</a>
+      </div>
+      <div class="stats reveal d2">
+        <div class="stat"><b data-count="4">0</b><span>أقسام متخصصة</span></div>
+        <div class="stat"><b data-count="50">0</b><span>مشروع منفذ</span></div>
+        <div class="stat"><b data-count="24">0</b><span>ساعة متابعة</span></div>
+        <div class="stat"><b data-count="100">0</b><span>% التزام بالمواعيد</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head reveal"><small>تواصل معنا</small><h2>يلا نبدأ مشروعك</h2></div>
+      <div class="contact">
+        <div class="card reveal"><div class="ico">💬</div><h3>واتساب</h3><a href="https://wa.me/201204117847" target="_blank">01204117847</a></div>
+        <div class="card reveal d1"><div class="ico">✉️</div><h3>الإيميل</h3><a href="mailto:ly7444743@gmail.com">ly7444743@gmail.com</a></div>
+        <div class="card reveal d2"><div class="ico">📍</div><h3>العنوان</h3><p>المنصورة، مصر</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 NASAQ — جميع الحقوق محفوظة</span>
+      <button onclick="showAdmin()">لوحة الإدارة</button>
+    </div>
+  </footer>
+</div>
+
+<a class="wa-float" href="https://wa.me/201204117847" target="_blank" aria-label="واتساب">💬</a>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" onclick="if(event.target===this)closeLb()">
+  <button class="lb-btn lb-x" onclick="closeLb()" aria-label="إغلاق">✕</button>
+  <div class="lb-count" id="lbCount"></div>
+  <button class="lb-btn lb-prev" onclick="step(1)" aria-label="السابق">›</button>
+  <img class="lb-img" id="lbImg" alt="">
+  <button class="lb-btn lb-next" onclick="step(-1)" aria-label="التالي">‹</button>
+  <div class="lb-cap"><small id="lbTag"></small><h4 id="lbTitle"></h4></div>
+</div>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div id="admin" class="hidden">
+  <nav class="scrolled">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;height:72px">
+      <div class="logo"><i class="logo-dot"></i>NAS<span>A</span>Q</div>
+      <button class="btn ghost small" onclick="showPublic()">← الموقع</button>
+    </div>
+  </nav>
+
+  <div class="wrap" style="margin-top:40px">
+    <div class="adm-head">
+      <h2>لوحة <span>الإدارة</span></h2>
+      <button class="btn danger small" onclick="resetData()">إعادة ضبط البيانات</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span>الأقسام</span><b id="k-depts">0</b></div>
+      <div class="kpi"><span>الموظفين</span><b id="k-emps">0</b></div>
+      <div class="kpi"><span>مهام مفتوحة</span><b id="k-open">0</b></div>
+      <div class="kpi"><span>مهام مكتملة</span><b id="k-done">0</b></div>
+    </div>
+
+    <div class="panel">
+      <h3>🏢 الأقسام والمدراء</h3>
+      <div class="dept-grid" id="deptGrid"></div>
+      <form class="row" style="margin-top:20px" onsubmit="setManager(event)">
+        <label>القسم<select id="mgrDept"></select></label>
+        <label>اسم المدير<input id="mgrName" required placeholder="اسم مدير القسم"></label>
+        <button class="btn small" type="submit">حفظ المدير</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h3>📋 لوحة المهام</h3>
+      <form class="row" onsubmit="addTask(event)">
+        <label style="flex:2">عنوان المهمة<input id="tTitle" required placeholder="مثال: تصميم بوستر عيد الأم"></label>
+        <label>القسم<select id="tDept"></select></label>
+        <label>الموظف<select id="tAssignee"></select></label>
+        <label>الموعد<input type="date" id="tDue"></label>
+        <button class="btn small" type="submit">إضافة مهمة</button>
+      </form>
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="panel">
+      <h3>👥 الموظفين</h3>
+      <form class="row" onsubmit="addEmployee(event)">
+        <label>اسم الموظف<input id="eName" required placeholder="اسم الموظف"></label>
+        <label>القسم<select id="eDept"></select></label>
+        <button class="btn small" type="submit">إضافة موظف</button>
+      </form>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>الاسم</th><th>القسم</th><th>المهام المفتوحة</th><th></th></tr></thead>
+          <tbody id="teamBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   1) أعمال المعرض — عدّل هنا أو ضيف أعمال جديدة
+   حط الصور في فولدر اسمه works جنب الملف
+   ========================================================= */
+const WORKS = [
+  {src:'works/01-last-mission.webp', title:'The Last Mission', tag:'أفيش سينمائي', cat:'posters', grad:'linear-gradient(135deg,#0d1b2e,#000)'},
+  {src:'works/02-king-burger.webp',  title:'King Burger',      tag:'إعلان مطعم',   cat:'ads',     grad:'linear-gradient(135deg,#3a1a05,#0a0a0a)', wide:true},
+  {src:'works/03-nova-r8.webp',      title:'Nova R8',          tag:'إعلان سيارة',  cat:'ads',     grad:'linear-gradient(135deg,#3a0808,#050505)', wide:true},
+  {src:'works/04-beyond.webp',       title:'Beyond The Unknown',tag:'أفيش سينمائي',cat:'posters', grad:'linear-gradient(135deg,#0b1a2e,#05070d)'},
+  {src:'works/05-lost-temple.webp',  title:'The Lost Temple',  tag:'أفيش سينمائي', cat:'posters', grad:'linear-gradient(135deg,#3d2305,#0a0703)'},
+  {src:'works/06-apex-brand.webp',   title:'APEX — هوية وإعلان',tag:'إعلان شركة',  cat:'ads',     grad:'linear-gradient(135deg,#1a1a1a,#000)'},
+  {src:'works/07-apex-booth.webp',   title:'APEX — جناح المعرض',tag:'إعلان معرض', cat:'ads',     grad:'linear-gradient(135deg,#2a0a0a,#000)'},
+  {src:'works/08-sauvage.webp',      title:'Sauvage — Eau de Parfum', tag:'إعلان منتج', cat:'ads', grad:'linear-gradient(135deg,#1a1205,#000)', wide:true}
+];
+const FILTERS = [['all','الكل'],['ads','إعلانات'],['posters','أفيشات']];
+
+/* =========================================================
+   2) تفاعلات الموقع
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const nav = $('#nav');
+const burger = $('#burger');
+const links = $('#links');
+
+// nav background on scroll
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), {passive:true});
+
+// mobile menu
+burger.addEventListener('click', () => { burger.classList.toggle('open'); links.classList.toggle('open'); });
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open'); links.classList.remove('open');
+}));
+
+// scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// animated counters
+const cio = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target, to = +el.dataset.count, t0 = performance.now(), dur = 1600;
+    const tick = now => {
+      const p = Math.min((now - t0) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * eased);
+      if(p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    cio.unobserve(el);
+  });
+}, {threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+// card spotlight follows mouse
+document.querySelectorAll('.card').forEach(c => c.addEventListener('mousemove', e => {
+  const r = c.getBoundingClientRect();
+  c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+  c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+}));
+
+/* ---------- GALLERY ---------- */
+let filter = 'all', visible = [], current = 0;
+
+function renderFilters(){
+  $('#filters').innerHTML = FILTERS.map(([v,l]) =>
+    `<button class="fbtn ${v===filter?'active':''}" onclick="setFilter('${v}')">${l}</button>`).join('');
+}
+function setFilter(v){ filter = v; renderFilters(); renderGallery(); }
+
+function renderGallery(){
+  visible = WORKS.filter(w => filter === 'all' || w.cat === filter);
+  $('#gallery').innerHTML = visible.map((w,i) => `
+    <figure class="gcard ${w.wide?'wide':''}" style="animation-delay:${i*90}ms" onclick="openLb(${i})">
+      <div class="gimg" style="background:${w.grad}">
+        <img src="${w.src}" alt="${esc(w.title)}" loading="lazy" onerror="this.remove()">
+      </div>
+      <span class="zoom">⤢</span>
+      <figcaption><small>${esc(w.tag)}</small><h4>${esc(w.title)}</h4></figcaption>
+    </figure>`).join('');
+}
+
+function openLb(i){
+  current = i; updateLb();
+  $('#lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb(){
+  $('#lb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function step(d){
+  current = (current + d + visible.length) % visible.length;
+  const img = $('#lbImg');
+  img.classList.add('swap');
+  setTimeout(() => { updateLb(); img.classList.remove('swap'); }, 220);
+}
+function updateLb(){
+  const w = visible[current];
+  const img = $('#lbImg');
+  img.src = w.src; img.alt = w.title;
+  img.onerror = () => { img.style.display = 'none'; };
+  img.style.display = '';
+  $('#lbTitle').textContent = w.title;
+  $('#lbTag').textContent = w.tag;
+  $('#lbCount').textContent = `${current+1} / ${visible.length}`;
+}
+document.addEventListener('keydown', e => {
+  if(!$('#lb').classList.contains('open')) return;
+  if(e.key === 'Escape') closeLb();
+  if(e.key === 'ArrowRight') step(-1);   // RTL: السهم اليمين = الأسبق
+  if(e.key === 'ArrowLeft') step(1);
+});
+// swipe on mobile
+let tx = 0;
+const lbEl = $('#lb');
+lbEl.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+lbEl.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) > 50) step(dx > 0 ? 1 : -1);
+}, {passive:true});
+
+/* ---------- ADMIN ---------- */
+const KEY = 'nasaq-data-v1';
+const DEPTS = [
+  {id:'ads',     name:'الإعلانات',     icon:'📣', color:'#ff5a1f'},
+  {id:'graphic', name:'الجرافيك',      icon:'🎨', color:'#e8b84a'},
+  {id:'montage', name:'المونتاج',      icon:'🎬', color:'#3ecf8e'},
+  {id:'web',     name:'صناعة المواقع', icon:'💻', color:'#6ea8ff'}
+];
+const STATUSES = [['new','جديد'],['progress','قيد التنفيذ'],['review','مراجعة'],['done','مكتمل']];
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const deptOf = id => DEPTS.find(d => d.id === id) || {name:'-', color:'#666', icon:''};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+function seed(){
+  const e = [
+    {id:uid(), name:'سارة محمود', dept:'graphic'},
+    {id:uid(), name:'كريم علي',   dept:'ads'},
+    {id:uid(), name:'منى إبراهيم',dept:'montage'},
+    {id:uid(), name:'يوسف حسن',   dept:'web'}
+  ];
+  const t = [
+    {id:uid(), title:'تصميم بوستر عرض الصيف', dept:'graphic', assignee:e[0].id, status:'progress', due:''},
+    {id:uid(), title:'حملة فيسبوك للعيادة',    dept:'ads',     assignee:e[1].id, status:'new',      due:''},
+    {id:uid(), title:'مونتاج ريل تعريفي',       dept:'montage', assignee:e[2].id, status:'review',   due:''}
+  ];
+  return {managers:{ads:'',graphic:'',montage:'',web:''}, employees:e, tasks:t};
+}
+let data = JSON.parse(localStorage.getItem(KEY) || 'null') || seed();
+function save(){ localStorage.setItem(KEY, JSON.stringify(data)); render(); }
+
+function fillSelect(el, items, placeholder){
+  el.innerHTML = (placeholder ? `<option value="">${placeholder}</option>` : '') +
+    items.map(i => `<option value="${esc(i.value)}">${esc(i.label)}</option>`).join('');
+}
+
+function render(){
+  const deptItems = DEPTS.map(d=>({value:d.id,label:d.name}));
+  const prevT = $('#tDept').value;
+  fillSelect($('#mgrDept'), deptItems);
+  fillSelect($('#tDept'), deptItems);
+  fillSelect($('#eDept'), deptItems);
+  if(prevT) $('#tDept').value = prevT;
+  const tDeptSel = $('#tDept').value || DEPTS[0].id;
+  fillSelect($('#tAssignee'),
+    data.employees.filter(e=>e.dept===tDeptSel).map(e=>({value:e.id,label:e.name})), 'بدون موظف');
+
+  const open = data.tasks.filter(t=>t.status!=='done').length;
+  $('#k-depts').textContent = DEPTS.length;
+  $('#k-emps').textContent = data.employees.length;
+  $('#k-open').textContent = open;
+  $('#k-done').textContent = data.tasks.length - open;
+
+  $('#deptGrid').innerHTML = DEPTS.map(d=>{
+    const emps = data.employees.filter(e=>e.dept===d.id).length;
+    const tasks = data.tasks.filter(t=>t.dept===d.id && t.status!=='done').length;
+    return `<div class="dept" style="--c:${d.color}">
+      <h4>${d.icon} ${esc(d.name)}</h4>
+      <div class="mgr">المدير: ${data.managers[d.id] ? esc(data.managers[d.id]) : '<i>لم يُعيَّن</i>'}</div>
+      <div class="nums"><span>موظفين: <b>${emps}</b></span><span>مهام مفتوحة: <b>${tasks}</b></span></div>
+    </div>`;
+  }).join('');
+
+  $('#board').innerHTML = STATUSES.map(([st,label])=>{
+    const items = data.tasks.filter(t=>t.status===st);
+    return `<div class="col">
+      <h5>${label} <b>${items.length}</b></h5>
+      ${items.length ? items.map(taskCard).join('') : '<div class="empty">لا توجد مهام</div>'}
+    </div>`;
+  }).join('');
+
+  $('#teamBody').innerHTML = data.employees.length ? data.employees.map(e=>{
+    const d = deptOf(e.dept);
+    const open = data.tasks.filter(t=>t.assignee===e.id && t.status!=='done').length;
+    return `<tr>
+      <td>${esc(e.name)}</td>
+      <td><span class="pill" style="border-color:${d.color}">${d.icon} ${esc(d.name)}</span></td>
+      <td>${open}</td>
+      <td><button class="btn danger small" onclick="removeEmployee('${e.id}')">حذف</button></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="4" class="empty">لا يوجد موظفين</td></tr>`;
+}
+
+function taskCard(t){
+  const d = deptOf(t.dept);
+  const emp = data.employees.find(e=>e.id===t.assignee);
+  return `<div class="task" style="--c:${d.color}">
+    <h6>${esc(t.title)}</h6>
+    <div class="meta">${d.icon} ${esc(d.name)} · ${emp ? esc(emp.name) : 'بدون موظف'}${t.due ? ' · ⏰ '+esc(t.due) : ''}</div>
+    <div class="acts">
+      <select onchange="moveTask('${t.id}', this.value)">
+        ${STATUSES.map(([v,l])=>`<option value="${v}" ${v===t.status?'selected':''}>${l}</option>`).join('')}
+      </select>
+      <button class="x" onclick="removeTask('${t.id}')">حذف</button>
+    </div>
+  </div>`;
+}
+
+function addTask(ev){
+  ev.preventDefault();
+  data.tasks.push({
+    id: uid(),
+    title: $('#tTitle').value.trim(),
+    dept: $('#tDept').value,
+    assignee: $('#tAssignee').value,
+    status: 'new',
+    due: $('#tDue').value
+  });
+  ev.target.reset();
+  save();
+}
+function moveTask(id, status){ const t = data.tasks.find(x=>x.id===id); if(t){ t.status = status; save(); } }
+function removeTask(id){ if(confirm('حذف المهمة؟')){ data.tasks = data.tasks.filter(x=>x.id!==id); save(); } }
+
+function addEmployee(ev){
+  ev.preventDefault();
+  data.employees.push({ id: uid(), name: $('#eName').value.trim(), dept: $('#eDept').value });
+  ev.target.reset();
+  save();
+}
+function removeEmployee(id){
+  if(!confirm('حذف الموظف؟')) return;
+  data.employees = data.employees.filter(e=>e.id!==id);
+  data.tasks.forEach(t=>{ if(t.assignee===id) t.assignee=''; });
+  save();
+}
+function setManager(ev){
+  ev.preventDefault();
+  data.managers[$('#mgrDept').value] = $('#mgrName').value.trim();
+  ev.target.querySelector('input').value = '';
+  save();
+}
+function resetData(){
+  if(confirm('هيتم مسح كل البيانات والرجوع للبيانات التجريبية. متأكد؟')){ data = seed(); save(); }
+}
+$('#tDept').addEventListener('change', render);
+
+/* view transitions */
+function showAdmin(){
+  $('#public').classList.add('hidden');
+  const a = $('#admin');
+  a.classList.remove('hidden','enter'); void a.offsetWidth; a.classList.add('enter');
+  window.scrollTo(0,0);
+}
+function showPublic(){
+  $('#admin').classList.add('hidden');
+  const p = $('#public');
+  p.classList.remove('hidden'); p.classList.remove('enter'); void p.offsetWidth; p.classList.add('enter');
+  window.scrollTo(0,0);
+}
+
+/* init */
+renderFilters();
+renderGallery();
+render();
+</script>
+</body>
+</html>
